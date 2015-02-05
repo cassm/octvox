@@ -8,7 +8,8 @@ set(SOURCE_FILES
     README.md)
 
 set(TEST_SOURCE_FILES
-    test/main.cpp)
+    test/main.cpp
+    test/OctLeafTest.cpp)
 
 set(GTEST_ROOT test/googletest)
 
