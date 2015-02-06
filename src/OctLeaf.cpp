@@ -3,10 +3,6 @@
 
 OctLeaf::~OctLeaf() {}
 
-OctLeaf::OctLeaf(const OctLeaf&) {
-    // FIXME
-}
-
 bool OctLeaf::getVoxel(const VoxelAddress a) const {
     return voxels[a.getLinearIndex()];
 }

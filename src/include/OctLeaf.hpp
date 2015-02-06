@@ -13,7 +13,7 @@ public:
 
     OctLeaf(const std::bitset<volume>& _voxels) : voxels(_voxels) {}
     ~OctLeaf();
-    OctLeaf(const OctLeaf&);
+    OctLeaf(const OctLeaf&) = default;
 
     bool getVoxel(const VoxelAddress) const;
 
