@@ -18,7 +18,9 @@ public:
 
     bool getVoxel(const VoxelAddress) const;
 
-    boost::shared_ptr<const OctLeaf> intersection(boost::shared_ptr<const OctLeaf> other) const;
+    boost::shared_ptr<const OctLeaf> intersectionWith(boost::shared_ptr<const OctLeaf> other) const;
+
+    boost::shared_ptr<const OctLeaf> unionWith(boost::shared_ptr<const OctLeaf> other) const;
 
     bool operator==(const OctLeaf &other) const;
 

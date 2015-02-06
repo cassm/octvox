@@ -17,6 +17,7 @@ namespace {
         shared_ptr<const OctLeaf> a2;
         shared_ptr<const OctLeaf> b;
         shared_ptr<const OctLeaf> aIntersectB;
+        shared_ptr<const OctLeaf> aUnionB;
         VoxelAddress full;
         VoxelAddress empty;
         VoxelAddress origin;
@@ -52,8 +53,10 @@ namespace {
             aIntersectB = make_shared<const OctLeaf> (voxels);
 
             voxels.reset();
-            voxels.set(onlyInB.getLinearIndex());
             voxels.set(inBoth.getLinearIndex());
+            aUnionB = make_shared<const OctLeaf> (voxels);
+
+            voxels.set(onlyInB.getLinearIndex());
             b = make_shared<const OctLeaf> (voxels);
         }
 
@@ -102,8 +105,13 @@ namespace {
     }
 
     TEST_F(OctLeafTest, intersectionWorks) {
-        shared_ptr<const OctLeaf> i = a->intersection(b);
+        shared_ptr<const OctLeaf> i = a->intersectionWith(b);
         ASSERT_TRUE(*i == *aIntersectB);
+    }
+
+    TEST_F(OctLeafTest, unionWorks) {
+        shared_ptr<const OctLeaf> i = a->unionWith(b);
+        ASSERT_TRUE(*i == *aUnionB);
     }
 
 }  // namespace
