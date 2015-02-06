@@ -1,4 +1,5 @@
 #include "OctLeaf.hpp"
+#include "VoxelAddress.hpp"
 
 OctLeaf::~OctLeaf() {}
 
@@ -7,5 +8,5 @@ OctLeaf::OctLeaf(const OctLeaf&) {
 }
 
 bool OctLeaf::getVoxel(VoxelAddress a) {
-    return voxels[(a.x & lengthMask) * edgeLength * edgeLength + (a.y & lengthMask) * edgeLength + (a.z & lengthMask)];
+    return voxels[a.getLinearIndex()];
 }

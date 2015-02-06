@@ -6,10 +6,13 @@ namespace {
 
     class OctLeafTest : public ::testing::Test {
     protected:
-        OctLeaf *leaf;
+        OctLeaf *emptyLeaf;
         OctLeaf *fullLeaf;
+        OctLeaf *partialLeaf;
+        VoxelAddress full, empty, origin;
 
-        OctLeafTest() {
+
+        OctLeafTest() : full(1, 2, 3), empty(3, 2, 1), origin(0, 0, 0) {
             // You can do set-up work for each test here.
         }
 
@@ -19,13 +22,15 @@ namespace {
 
         virtual void SetUp() {
             std::bitset<OctLeaf::volume> voxels;
-            leaf = new OctLeaf(voxels);
+            emptyLeaf = new OctLeaf(voxels);
+            voxels.set(full.getLinearIndex());
+            partialLeaf = new OctLeaf(voxels);
             voxels.set();
             fullLeaf = new OctLeaf(voxels);
         }
 
         virtual void TearDown() {
-            delete leaf;
+            delete emptyLeaf;
             delete fullLeaf;
         }
     };
@@ -33,11 +38,16 @@ namespace {
     TEST_F(OctLeafTest, Construction) {}
 
     TEST_F(OctLeafTest, getVoxelReturnsFalseWhenGettingAnEmptyVoxel) {
-        ASSERT_FALSE(leaf->getVoxel(VoxelAddress(0, 0, 0)));
+        ASSERT_FALSE(emptyLeaf->getVoxel(origin));
     }
 
     TEST_F(OctLeafTest, getVoxelReturnsTrueWhenGettingAFullVoxel) {
-        ASSERT_TRUE(fullLeaf->getVoxel(VoxelAddress(0, 0, 0)));
+        ASSERT_TRUE(fullLeaf->getVoxel(origin));
+    }
+
+    TEST_F(OctLeafTest, getVoxelReturnsCorrectlyAtNonZeroAddress) {
+        ASSERT_TRUE(partialLeaf->getVoxel(full));
+        ASSERT_FALSE(partialLeaf->getVoxel(empty));
     }
 
 }  // namespace

@@ -2,7 +2,8 @@
 #define OCT_LEAF_HPP
 
 #include <bitset>
-#include "VoxelAddress.hpp"
+
+class VoxelAddress;
 
 class OctLeaf {
 public:
