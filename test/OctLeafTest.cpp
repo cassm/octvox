@@ -1,8 +1,11 @@
 #include "gtest/gtest.h"
 #include "OctLeaf.hpp"
 #include "VoxelAddress.hpp"
+#include <boost/make_shared.hpp>
 
 namespace {
+
+    using boost::shared_ptr;
 
     class OctLeafTest : public ::testing::Test {
     protected:
@@ -10,6 +13,7 @@ namespace {
         OctLeaf *fullLeaf;
         OctLeaf *partialLeaf;
         OctLeaf *a;
+        OctLeaf *a2;
         OctLeaf *b;
         VoxelAddress full;
         VoxelAddress empty;
@@ -46,6 +50,7 @@ namespace {
             voxels.set(onlyInA.getLinearIndex());
             voxels.set(inBoth.getLinearIndex());
             a = new OctLeaf(voxels);
+            a2 = new OctLeaf(voxels);
 
             voxels.reset();
             voxels.set(onlyInB.getLinearIndex());
@@ -82,8 +87,20 @@ namespace {
         ASSERT_FALSE(partialLeaf->getVoxel(outOfRangeEmpty));
     }
 
+    TEST_F(OctLeafTest, equalReturnsTrueOnIdenticalOctLeafs) {
+        ASSERT_TRUE(*a == *a);
+    }
+
+    TEST_F(OctLeafTest, equalReturnsFalseOnUnequalOctLeafs) {
+        ASSERT_FALSE(*a == *b);
+    }
+
+    TEST_F(OctLeafTest, equalReturnsTrueOnEqualButNotIdenticalOctLeafs) {
+        ASSERT_TRUE(*a == *a2);
+    }
+
     TEST_F(OctLeafTest, intersectionWorks) {
-//        OctLeaf &i = a.intersection(b);
+//        shared_ptr<OctLeaf> i = a.intersection(b);
     }
 
 }  // namespace

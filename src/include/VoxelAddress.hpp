@@ -13,7 +13,7 @@ public:
     VoxelAddress(uint_fast64_t _x, uint_fast64_t _y, uint_fast64_t _z) :
             x(_x), y(_y), z(_z) {}
 
-    inline size_t getLinearIndex() {
+    inline size_t getLinearIndex() const {
         return (x & OctLeaf::lengthMask) * OctLeaf::edgeLength * OctLeaf::edgeLength + (y & OctLeaf::lengthMask) * OctLeaf::edgeLength + (z & OctLeaf::lengthMask);
     }
 
