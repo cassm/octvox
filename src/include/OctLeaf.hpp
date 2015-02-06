@@ -2,6 +2,7 @@
 #define OCT_LEAF_HPP
 
 #include <bitset>
+#include <boost/shared_ptr.hpp>
 
 class VoxelAddress;
 
@@ -16,6 +17,8 @@ public:
     OctLeaf(const OctLeaf&) = default;
 
     bool getVoxel(const VoxelAddress) const;
+
+    boost::shared_ptr<const OctLeaf> intersection(boost::shared_ptr<const OctLeaf> other) const;
 
     bool operator==(const OctLeaf &other) const;
 

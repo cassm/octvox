@@ -14,7 +14,9 @@ public:
             x(_x), y(_y), z(_z) {}
 
     inline size_t getLinearIndex() const {
-        return (x & OctLeaf::lengthMask) * OctLeaf::edgeLength * OctLeaf::edgeLength + (y & OctLeaf::lengthMask) * OctLeaf::edgeLength + (z & OctLeaf::lengthMask);
+        return (x & OctLeaf::lengthMask) * OctLeaf::edgeLength * OctLeaf::edgeLength
+                + (y & OctLeaf::lengthMask) * OctLeaf::edgeLength
+                + (z & OctLeaf::lengthMask);
     }
 
 };

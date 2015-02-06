@@ -10,12 +10,13 @@ namespace {
 
     class OctLeafTest : public ::testing::Test {
     protected:
-        shared_ptr<OctLeaf> emptyLeaf;
-        shared_ptr<OctLeaf> fullLeaf;
-        shared_ptr<OctLeaf> partialLeaf;
-        shared_ptr<OctLeaf> a;
-        shared_ptr<OctLeaf> a2;
-        shared_ptr<OctLeaf> b;
+        shared_ptr<const OctLeaf> emptyLeaf;
+        shared_ptr<const OctLeaf> fullLeaf;
+        shared_ptr<const OctLeaf> partialLeaf;
+        shared_ptr<const OctLeaf> a;
+        shared_ptr<const OctLeaf> a2;
+        shared_ptr<const OctLeaf> b;
+        shared_ptr<const OctLeaf> aIntersectB;
         VoxelAddress full;
         VoxelAddress empty;
         VoxelAddress origin;
@@ -33,24 +34,27 @@ namespace {
         {
             std::bitset<OctLeaf::volume> voxels;
 
-            emptyLeaf = make_shared<OctLeaf> (voxels);
+            emptyLeaf = make_shared<const OctLeaf> (voxels);
 
             voxels.set(full.getLinearIndex());
-            partialLeaf = make_shared<OctLeaf> (voxels);
+            partialLeaf = make_shared<const OctLeaf> (voxels);
 
             voxels.set();
-            fullLeaf = make_shared<OctLeaf> (voxels);
+            fullLeaf = make_shared<const OctLeaf> (voxels);
 
             voxels.reset();
             voxels.set(onlyInA.getLinearIndex());
             voxels.set(inBoth.getLinearIndex());
-            a = make_shared<OctLeaf> (voxels);
-            a2 = make_shared<OctLeaf> (voxels);
+            a = make_shared<const OctLeaf> (voxels);
+            a2 = make_shared<const OctLeaf> (voxels);
+
+            voxels.set(onlyInB.getLinearIndex());
+            aIntersectB = make_shared<const OctLeaf> (voxels);
 
             voxels.reset();
             voxels.set(onlyInB.getLinearIndex());
             voxels.set(inBoth.getLinearIndex());
-            b = make_shared<OctLeaf> (voxels);
+            b = make_shared<const OctLeaf> (voxels);
         }
 
         virtual ~OctLeafTest() {
@@ -98,8 +102,8 @@ namespace {
     }
 
     TEST_F(OctLeafTest, intersectionWorks) {
-//        shared_ptr<OctLeaf> i = a.intersection(b);
-
+        shared_ptr<const OctLeaf> i = a->intersection(b);
+        ASSERT_TRUE(*i == *aIntersectB);
     }
 
 }  // namespace
