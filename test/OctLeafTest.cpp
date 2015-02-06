@@ -6,15 +6,16 @@
 namespace {
 
     using boost::shared_ptr;
+    using boost::make_shared;
 
     class OctLeafTest : public ::testing::Test {
     protected:
-        OctLeaf *emptyLeaf;
-        OctLeaf *fullLeaf;
-        OctLeaf *partialLeaf;
-        OctLeaf *a;
-        OctLeaf *a2;
-        OctLeaf *b;
+        shared_ptr<OctLeaf> emptyLeaf;
+        shared_ptr<OctLeaf> fullLeaf;
+        shared_ptr<OctLeaf> partialLeaf;
+        shared_ptr<OctLeaf> a;
+        shared_ptr<OctLeaf> a2;
+        shared_ptr<OctLeaf> b;
         VoxelAddress full;
         VoxelAddress empty;
         VoxelAddress origin;
@@ -29,39 +30,36 @@ namespace {
                 onlyInA(6, 7, 8),
                 onlyInB(7, 8, 9),
                 inBoth(8, 9, 10)
-        {}
+        {
+            std::bitset<OctLeaf::volume> voxels;
+
+            emptyLeaf = make_shared<OctLeaf> (voxels);
+
+            voxels.set(full.getLinearIndex());
+            partialLeaf = make_shared<OctLeaf> (voxels);
+
+            voxels.set();
+            fullLeaf = make_shared<OctLeaf> (voxels);
+
+            voxels.reset();
+            voxels.set(onlyInA.getLinearIndex());
+            voxels.set(inBoth.getLinearIndex());
+            a = make_shared<OctLeaf> (voxels);
+            a2 = make_shared<OctLeaf> (voxels);
+
+            voxels.reset();
+            voxels.set(onlyInB.getLinearIndex());
+            voxels.set(inBoth.getLinearIndex());
+            b = make_shared<OctLeaf> (voxels);
+        }
 
         virtual ~OctLeafTest() {
             // You can do clean-up work that doesn't throw exceptions here.
         }
 
-        virtual void SetUp() {
-            std::bitset<OctLeaf::volume> voxels;
+        virtual void SetUp() {}
 
-            emptyLeaf = new OctLeaf(voxels);
-
-            voxels.set(full.getLinearIndex());
-            partialLeaf = new OctLeaf(voxels);
-
-            voxels.set();
-            fullLeaf = new OctLeaf(voxels);
-
-            voxels.reset();
-            voxels.set(onlyInA.getLinearIndex());
-            voxels.set(inBoth.getLinearIndex());
-            a = new OctLeaf(voxels);
-            a2 = new OctLeaf(voxels);
-
-            voxels.reset();
-            voxels.set(onlyInB.getLinearIndex());
-            voxels.set(inBoth.getLinearIndex());
-            b = new OctLeaf(voxels);
-        }
-
-        virtual void TearDown() {
-            delete emptyLeaf;
-            delete fullLeaf;
-        }
+        virtual void TearDown() {}
     };
 
     TEST_F(OctLeafTest, Construction) {}
@@ -101,6 +99,7 @@ namespace {
 
     TEST_F(OctLeafTest, intersectionWorks) {
 //        shared_ptr<OctLeaf> i = a.intersection(b);
+
     }
 
 }  // namespace
