@@ -8,5 +8,6 @@ OctLeaf::OctLeaf(const OctLeaf&) {
 }
 
 bool OctLeaf::getVoxel(VoxelAddress a) {
+
     return voxels[a.getLinearIndex()];
 }

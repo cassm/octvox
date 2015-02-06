@@ -8,7 +8,7 @@ class VoxelAddress;
 class OctLeaf {
 public:
     static const size_t edgeLength = 16;
-    static const uint_fast64_t lengthMask = 2 * edgeLength - 1;
+    static const uint_fast64_t lengthMask = edgeLength - 1;
     static const size_t volume = edgeLength * edgeLength * edgeLength;
 
     OctLeaf(const std::bitset<volume>& _voxels) : voxels(_voxels) {}
