@@ -41,12 +41,12 @@ namespace {
     TEST_F(OctreeTest, getVoxelReturnsFalseWhenGettingAnEmptyVoxel) {
         ASSERT_FALSE(emptyTree->getVoxel(origin));
     }
-#if 0
 
     TEST_F(OctreeTest, getVoxelReturnsTrueWhenGettingAFullVoxel) {
         ASSERT_TRUE(fullTree->getVoxel(origin));
     }
 
+#if 0
     TEST_F(OctreeTest, getVoxelReturnsCorrectlyAtNonZeroAddress) {
         ASSERT_TRUE(partialTree->getVoxel(full));
         ASSERT_FALSE(partialTree->getVoxel(empty));

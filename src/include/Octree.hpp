@@ -27,7 +27,13 @@ namespace octvox {
         // For testing.
         bool getVoxel(const VoxelAddress addr) const {
             auto childIndex = addr.getSubtreeIndex(height);
-            return false;
+            if(full[childIndex]) {
+                return true;
+            } else if (children[childIndex].use_count() == 0) {
+                return false;
+            } else {
+                return children[childIndex]->getVoxel(addr);
+            }
         }
 
         boost::shared_ptr<const Octree> setLeaf(const OctLeaf&& leaf, const VoxelAddress) {
