@@ -4,28 +4,34 @@
 #include <bitset>
 #include <boost/shared_ptr.hpp>
 
-class VoxelAddress;
+namespace octvox {
 
-class OctLeaf {
-public:
-    static const size_t edgeLength = 4;
-    static const uint_fast64_t lengthMask = edgeLength - 1;
-    static const size_t volume = edgeLength * edgeLength * edgeLength;
+    class VoxelAddress;
 
-    OctLeaf(const std::bitset<volume>& _voxels) : voxels(_voxels) {}
-    ~OctLeaf();
-    OctLeaf(const OctLeaf&) = default;
+    class OctLeaf {
+    public:
+        static const size_t edgeLength = 4;
+        static const uint_fast64_t lengthMask = edgeLength - 1;
+        static const size_t volume = edgeLength * edgeLength * edgeLength;
 
-    bool getVoxel(const VoxelAddress) const;
+        OctLeaf(const std::bitset<volume> &_voxels) : voxels(_voxels) {
+        }
 
-    boost::shared_ptr<const OctLeaf> intersectionWith(boost::shared_ptr<const OctLeaf> other) const;
+        ~OctLeaf();
 
-    boost::shared_ptr<const OctLeaf> unionWith(boost::shared_ptr<const OctLeaf> other) const;
+        OctLeaf(const OctLeaf &) = default;
 
-    bool operator==(const OctLeaf &other) const;
+        bool getVoxel(const VoxelAddress) const;
 
-private:
-    const std::bitset<volume> voxels;
-};
+        boost::shared_ptr<const OctLeaf> intersectionWith(boost::shared_ptr<const OctLeaf> other) const;
 
+        boost::shared_ptr<const OctLeaf> unionWith(boost::shared_ptr<const OctLeaf> other) const;
+
+        bool operator==(const OctLeaf &other) const;
+
+    private:
+        const std::bitset<volume> voxels;
+    };
+
+}
 #endif

@@ -7,6 +7,7 @@ namespace {
 
     using boost::shared_ptr;
     using boost::make_shared;
+    using namespace octvox;
 
     class OctLeafTest : public ::testing::Test {
     protected:

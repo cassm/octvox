@@ -4,21 +4,26 @@
 #include <elf.h>
 #include "OctLeaf.hpp"
 
-class VoxelAddress {
-public:
-    const uint_fast64_t x;
-    const uint_fast64_t y;
-    const uint_fast64_t z;
+namespace octvox {
 
-    VoxelAddress(uint_fast64_t _x, uint_fast64_t _y, uint_fast64_t _z) :
-            x(_x), y(_y), z(_z) {}
+    class VoxelAddress {
+    public:
+        const uint_fast64_t x;
+        const uint_fast64_t y;
+        const uint_fast64_t z;
 
-    inline size_t getLinearIndex() const {
+        VoxelAddress(uint_fast64_t _x, uint_fast64_t _y, uint_fast64_t _z) :
+                x(_x), y(_y), z(_z) {
+        }
+
+        inline size_t getLinearIndex() const;
+    };
+
+    inline size_t VoxelAddress::getLinearIndex() const {
         return (x & OctLeaf::lengthMask) * OctLeaf::edgeLength * OctLeaf::edgeLength
                 + (y & OctLeaf::lengthMask) * OctLeaf::edgeLength
                 + (z & OctLeaf::lengthMask);
     }
 
-};
-
+}
 #endif
