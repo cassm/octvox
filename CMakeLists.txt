@@ -9,7 +9,8 @@ set(SOURCE_FILES
 
 set(TEST_SOURCE_FILES
     test/main.cpp
-    test/OctLeafTest.cpp)
+    test/OctLeafTest.cpp
+    test/OctreeTest.cpp)
 
 set(GTEST_ROOT test/googletest)
 
