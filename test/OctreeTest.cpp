@@ -24,8 +24,9 @@ namespace {
         OctreeTest() :
                 origin(0, 0, 0)
         {
-            emptyTree = make_shared<const Octree>();
-
+            auto height = 2;
+            emptyTree = make_shared<const Octree<height> >();
+            
         }
 
         virtual ~OctreeTest() {}

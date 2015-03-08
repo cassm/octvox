@@ -11,6 +11,7 @@ namespace octvox {
 
     class VoxelAddress;
 
+    template<uint_fast8_t height>
     class Octree {
     public:
         Octree() = default;
@@ -20,9 +21,15 @@ namespace octvox {
         Octree(const Octree &) = default;
 
         // for testing
-        bool getVoxel(const VoxelAddress) const;
+        bool getVoxel(const VoxelAddress addr) const {
+            auto childIndex = addr.getSubtreeIndex(height);
+            return false;
+        }
 
-        boost::shared_ptr<const Octree> setLeaf(const OctLeaf&& leaf, const VoxelAddress);
+        boost::shared_ptr<const Octree> setLeaf(const OctLeaf&& leaf, const VoxelAddress) {
+            return boost::shared_ptr<Octree const>();
+        }
+
         boost::shared_ptr<const Octree> intersectionWith(boost::shared_ptr<const Octree> other) const;
         boost::shared_ptr<const Octree> unionWith(boost::shared_ptr<const Octree> other) const;
 
@@ -34,6 +41,8 @@ namespace octvox {
         std::bitset<childrenSize> full;
         std::array<boost::shared_ptr<const Octree>, childrenSize> children;
     };
+
+
 
 }
 
