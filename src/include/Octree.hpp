@@ -1,6 +1,8 @@
 #ifndef OCTREE_HPP
 #define OCTREE_HPP
 
+#include "OctLeaf.hpp"
+
 #include <boost/shared_ptr.hpp>
 #include <bitset>
 
@@ -10,7 +12,7 @@ namespace octvox {
 
     class Octree {
     public:
-        Octree(const std::bitset<volume> &_voxels, const VoxelAddress);
+        Octree(const std::bitset<OctLeaf::volume> &_voxels, const VoxelAddress);
 
         ~Octree();
 
@@ -28,4 +30,5 @@ namespace octvox {
     };
 
 }
+
 #endif
