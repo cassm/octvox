@@ -7,26 +7,26 @@ namespace {
 
     using boost::shared_ptr;
     using boost::make_shared;
+    using std::bitset;
     using namespace octvox;
 
     class OctreeTest : public ::testing::Test {
     protected:
-        shared_ptr<const Octree> emptyTree;
-        shared_ptr<const Octree> fullTree;
-        shared_ptr<const Octree> partialTree;
-        shared_ptr<const Octree> a;
-        shared_ptr<const Octree> a2;
-        shared_ptr<const Octree> b;
-        shared_ptr<const Octree> aIntersectB;
-        shared_ptr<const Octree> aUnionB;
+        static const auto height = 2;
+        shared_ptr<const Octree<height> > emptyTree;
+        shared_ptr<const Octree<height> > fullTree;
+        shared_ptr<const Octree<height> > partialTree;
+        shared_ptr<const Octree<height> > a2;
+        shared_ptr<const Octree<height> > b;
+        shared_ptr<const Octree<height> > aIntersectB;
+        shared_ptr<const Octree<height> > aUnionB;
         const VoxelAddress origin;
 
         OctreeTest() :
                 origin(0, 0, 0)
         {
-            auto height = 2;
             emptyTree = make_shared<const Octree<height> >();
-            
+            fullTree = make_shared<const Octree<height> >(bitset<Octree<height>::childrenSize>().set());
         }
 
         virtual ~OctreeTest() {}

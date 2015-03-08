@@ -14,13 +14,17 @@ namespace octvox {
     template<uint_fast8_t height>
     class Octree {
     public:
+        static const size_t childrenSize = 8;
+
         Octree() = default;
+        // For testing.
+        Octree(std::bitset<childrenSize> _full) : full(_full) {}
 
         ~Octree() {}
 
         Octree(const Octree &) = default;
 
-        // for testing
+        // For testing.
         bool getVoxel(const VoxelAddress addr) const {
             auto childIndex = addr.getSubtreeIndex(height);
             return false;
@@ -36,7 +40,6 @@ namespace octvox {
         bool operator==(const Octree &other) const;
 
     private:
-        static const size_t childrenSize = 8;
         std::bitset<childrenSize> populated;
         std::bitset<childrenSize> full;
         std::array<boost::shared_ptr<const Octree>, childrenSize> children;
