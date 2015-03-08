@@ -36,9 +36,14 @@ TEST_F(VoxelAddressTest, thatGetSubtreeIndexReturnsZeroForAZeroAddress) {
         ASSERT_EQ(0, allZero.getSubtreeIndex(0));
     }
 
-TEST_F(VoxelAddressTest, thatGetSubtreeIndexReturns4ForOnlyXSet) {
+    TEST_F(VoxelAddressTest, thatGetSubtreeIndexReturns4ForOnlyXSet) {
         VoxelAddress onlyX(~0, 0, 0);
         ASSERT_EQ((2 << 1), onlyX.getSubtreeIndex(0));
+    }
+
+    TEST_F(VoxelAddressTest, thatGetSubtreeIndexReturns3ForYZSet) {
+        VoxelAddress setYZ(0, ~0, ~0);
+        ASSERT_EQ(3, setYZ.getSubtreeIndex(0));
     }
 
 }  // namespace

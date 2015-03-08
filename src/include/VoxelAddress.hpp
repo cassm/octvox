@@ -32,7 +32,10 @@ namespace octvox {
     }
 
     inline VoxelAddress::subtree_index_t VoxelAddress::getSubtreeIndex(uint_fast8_t hight) const {
-        return ((x & (1 << hight)) ? (1 << 2) : 0);
+        // speed optimise this bittwiddling later if profiling indicates that it matters.
+        return ((x & (1 << hight)) ? (1 << 2) : 0 |
+                ((y & (1 << hight)) ? (1 << 1) : 0) |
+                ((z & (1 << hight)) ? (1 << 0) : 0));
     }
 
 }
