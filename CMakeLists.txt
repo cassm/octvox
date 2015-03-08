@@ -10,7 +10,8 @@ set(SOURCE_FILES
 set(TEST_SOURCE_FILES
     test/main.cpp
     test/OctLeafTest.cpp
-    test/OctreeTest.cpp)
+    test/OctreeTest.cpp
+    test/VoxelAddressTest.cpp)
 
 set(GTEST_ROOT test/googletest)
 

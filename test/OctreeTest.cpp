@@ -31,11 +31,6 @@ namespace {
         virtual void TearDown() {}
     };
 
-TEST_F(OctreeTest, bitwiseRightShiftFlowsSetBitsFromTop) {
-        VoxelAddress::addr_t topSet = 0x8000000000000000;
-        VoxelAddress::addr_t topFourSet = 0xf000000000000000;
-    }
-
     TEST_F(OctreeTest, Construction) {}
 
 #if 0
