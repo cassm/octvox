@@ -19,8 +19,12 @@ namespace {
         shared_ptr<const Octree> b;
         shared_ptr<const Octree> aIntersectB;
         shared_ptr<const Octree> aUnionB;
+        const VoxelAddress origin;
 
-        OctreeTest() {
+        OctreeTest() :
+                origin(0, 0, 0)
+        {
+            emptyTree = make_shared<const Octree>();
 
         }
 
@@ -33,10 +37,10 @@ namespace {
 
     TEST_F(OctreeTest, Construction) {}
 
-#if 0
     TEST_F(OctreeTest, getVoxelReturnsFalseWhenGettingAnEmptyVoxel) {
         ASSERT_FALSE(emptyTree->getVoxel(origin));
     }
+#if 0
 
     TEST_F(OctreeTest, getVoxelReturnsTrueWhenGettingAFullVoxel) {
         ASSERT_TRUE(fullTree->getVoxel(origin));
