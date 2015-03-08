@@ -20,7 +20,7 @@ namespace octvox {
         }
 
         inline size_t getLinearIndex() const;
-        inline subtree_index_t getSubtreeIndex(uint_fast8_t hight) const;
+        inline subtree_index_t getSubtreeIndex(uint_fast8_t height) const;
 
     private:
     };
@@ -31,11 +31,12 @@ namespace octvox {
                 + (z & OctLeaf::lengthMask);
     }
 
-    inline VoxelAddress::subtree_index_t VoxelAddress::getSubtreeIndex(uint_fast8_t hight) const {
+    inline VoxelAddress::subtree_index_t VoxelAddress::getSubtreeIndex(uint_fast8_t height) const {
         // speed optimise this bittwiddling later if profiling indicates that it matters.
-        return ((x & (1 << hight)) ? (1 << 2) : 0 |
-                ((y & (1 << hight)) ? (1 << 1) : 0) |
-                ((z & (1 << hight)) ? (1 << 0) : 0));
+        height += OctLeaf::edgeLength;
+        return ((x & (1 << height)) ? (1 << 2) : 0 |
+                ((y & (1 << height)) ? (1 << 1) : 0) |
+                ((z & (1 << height)) ? (1 << 0) : 0));
     }
 
 }

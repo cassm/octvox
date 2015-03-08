@@ -46,4 +46,16 @@ namespace {
         ASSERT_EQ(3, setYZ.getSubtreeIndex(0));
     }
 
+    TEST_F(VoxelAddressTest, thatGetSubtreeIndexReturns2ForYSetAtHeight) {
+        auto height = 3;
+        VoxelAddress setY(0, 1 << (OctLeaf::edgeLength + height), 0);
+        ASSERT_EQ(2, setY.getSubtreeIndex(height));
+    }
+
+    TEST_F(VoxelAddressTest, thatGetSubtreeIndexReturns0ForZSetButNotAtHeight) {
+        auto height = 5;
+        VoxelAddress setZ(0, 0, 1 << (OctLeaf::edgeLength + height - 1));
+        ASSERT_EQ(0, setZ.getSubtreeIndex(height));
+    }
+
 }  // namespace
