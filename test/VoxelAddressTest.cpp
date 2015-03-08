@@ -31,4 +31,9 @@ namespace {
         ASSERT_NE(topFourSet, (topSet >> 3));
     }
 
+TEST_F(VoxelAddressTest, thatGetSubtreeIndexReturnsZeroForAZeroAddress) {
+        VoxelAddress allZero(0, 0, 0);
+        ASSERT_EQ(0, allZero.getSubtreeIndex());
+    }
+
 }  // namespace
