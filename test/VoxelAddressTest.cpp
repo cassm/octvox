@@ -33,7 +33,12 @@ namespace {
 
 TEST_F(VoxelAddressTest, thatGetSubtreeIndexReturnsZeroForAZeroAddress) {
         VoxelAddress allZero(0, 0, 0);
-        ASSERT_EQ(0, allZero.getSubtreeIndex());
+        ASSERT_EQ(0, allZero.getSubtreeIndex(0));
+    }
+
+TEST_F(VoxelAddressTest, thatGetSubtreeIndexReturns4ForOnlyXSet) {
+        VoxelAddress onlyX(~0, 0, 0);
+        ASSERT_EQ((2 << 1), onlyX.getSubtreeIndex(0));
     }
 
 }  // namespace
