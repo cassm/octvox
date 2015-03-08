@@ -14,16 +14,24 @@ namespace octvox {
 
     class OctreeHoist {
     public:
+        static const size_t childrenSize = 8;
 
+        OctreeHoist() = default;
+        OctreeHoist(const OctreeHoist &) = default;
+        OctreeHoist(const std::bitset<childrenSize> _full) : full(_full) {}
+
+    protected:
+        std::bitset<childrenSize> full;
     };
 
     template<uint_fast8_t height>
     class Octree : public OctreeHoist {
     public:
-        static const size_t childrenSize = 8;
-
+        Octree() = default;
+        Octree(const Octree &) = default;
         // For testing.
-        Octree(const std::bitset<childrenSize> _full) : full(_full) {}
+        Octree(const std::bitset<childrenSize> _full) : OctreeHoist(_full) {}
+        ~Octree() {}
 
         // For testing.
         bool getVoxel(const VoxelAddress addr) const {
@@ -37,7 +45,7 @@ namespace octvox {
             }
         }
 
-        boost::shared_ptr<const Octree> setLeaf(const OctLeaf& leaf, const VoxelAddress) const {
+        boost::shared_ptr<const Octree> setLeaf(boost::shared_ptr<const OctLeaf> leaf, const VoxelAddress) const {
             return boost::make_shared<const Octree>();
         }
 
@@ -47,22 +55,23 @@ namespace octvox {
         bool operator==(const Octree &other) const;
 
     private:
-        std::bitset<childrenSize> full;
-        std::array<boost::shared_ptr<const Octree>, childrenSize> children;
+        typedef const std::array<boost::shared_ptr<const Octree>, childrenSize> childrenType;
+
+        Octree(childrenType _children) : children(_children) {}
+        childrenType children;
     };
 
     template<>
-    class Octree<0> {
+    class Octree<0> : public OctreeHoist {
     public:
-        static const size_t childrenSize = 8;
+        typedef std::array<boost::shared_ptr<const OctLeaf>, childrenSize> childrenType;
 
         Octree() = default;
-        // For testing.
-        Octree(const std::bitset<childrenSize> _full) : full(_full) {}
-
-        ~Octree() {}
-
         Octree(const Octree &) = default;
+        // For testing.
+        Octree(const std::bitset<childrenSize> _full) : OctreeHoist(_full) {}
+        Octree(const childrenType _children) : children(_children) {}
+        ~Octree() {}
 
         // For testing.
         bool getVoxel(const VoxelAddress addr) const {
@@ -76,8 +85,11 @@ namespace octvox {
             }
         }
 
-        boost::shared_ptr<const Octree> setLeaf(const OctLeaf& leaf, const VoxelAddress) const {
-            return boost::make_shared<const Octree>();
+        boost::shared_ptr<const Octree> setLeaf(boost::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) const {
+            childrenType newChildren(children);
+            newChildren[addr.getSubtreeIndex(height)] = leaf;
+            return boost::make_shared<const Octree>(newChildren);
+
         }
 
         boost::shared_ptr<const Octree> intersectionWith(boost::shared_ptr<const Octree> other) const;
@@ -87,8 +99,7 @@ namespace octvox {
 
     private:
         static const uint_fast8_t height = 0;
-        std::bitset<childrenSize> full;
-        std::array<boost::shared_ptr<const OctLeaf>, childrenSize> children;
+        const childrenType children;
     };
 
 
