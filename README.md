@@ -33,3 +33,10 @@ stored at the leaf nodes.
 While the asymptotic worst case runtime of operations on octvox::Octree will be no better than the worst of a 
 conventional octree and a voxel array, in practice, for many real world tasks, the runtime and size should be close to,
 or even better than, the best of them.  
+
+## Status: Pre-Alpha
+
+Very much a WIP at present.
+ 
+The list of operations needs to be filled out, the functionality needs to be packaged as a library, and Octree itself 
+needs to be implemented.
