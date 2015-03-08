@@ -32,8 +32,8 @@ namespace {
     };
 
 TEST_F(OctreeTest, bitwiseRightShiftFlowsSetBitsFromTop) {
-        uint_fast64_t topSet = 0x8000000000000000;
-        uint_fast64_t topFourSet = 0xf000000000000000;
+        VoxelAddress::addr_t topSet = 0x8000000000000000;
+        VoxelAddress::addr_t topFourSet = 0xf000000000000000;
     }
 
     TEST_F(OctreeTest, Construction) {}

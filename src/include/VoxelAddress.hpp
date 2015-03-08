@@ -8,15 +8,17 @@ namespace octvox {
 
     class VoxelAddress {
     public:
-        const uint_fast64_t x;
-        const uint_fast64_t y;
-        const uint_fast64_t z;
+        typedef uint_fast64_t addr_t;
+        const addr_t x;
+        const addr_t y;
+        const addr_t z;
 
-        VoxelAddress(uint_fast64_t _x, uint_fast64_t _y, uint_fast64_t _z) :
+        VoxelAddress(addr_t _x, addr_t _y, addr_t _z) :
                 x(_x), y(_y), z(_z) {
         }
 
         inline size_t getLinearIndex() const;
+
     };
 
     inline size_t VoxelAddress::getLinearIndex() const {
