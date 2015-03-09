@@ -64,7 +64,7 @@ namespace octvox {
     template<>
     class Octree<0> : public OctreeHoist {
     public:
-        typedef std::array<boost::shared_ptr<const OctLeaf>, childrenSize> childrenType;
+        using childrenType = std::array<boost::shared_ptr<const OctLeaf>, childrenSize>;
 
         Octree() = default;
         Octree(const Octree &) = default;
