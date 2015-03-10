@@ -74,11 +74,11 @@ namespace octvox {
                 const VoxelAddress addr,
                 childrenType&& newChildren) const{
             auto& child = newChildren[addr.getSubtreeIndex(height)];
-//            if(child) {
+            if(child) {
                 child = child->setLeaf(leaf, addr);
-//            } else {
-//                child = boost::make_shared<childType>(leaf, addr);
-//            }
+            } else {
+                child = boost::make_shared<childType>(leaf, addr);
+            }
             return boost::make_shared<const Octree>(newChildren);
         }
 
@@ -98,50 +98,6 @@ namespace octvox {
     Octree<0u>::Octree(const boost::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) {
         children[addr.getSubtreeIndex(0u)] = leaf;
     }
-
-
-#if 0
-    template<>
-    class Octree<0> : public OctreeHoist {
-    public:
-        using childrenType = std::array<boost::shared_ptr<const OctLeaf>, childrenSize>;
-
-        Octree() = default;
-        Octree(const Octree &) = default;
-        // For testing.
-        Octree(const std::bitset<childrenSize> _full) : OctreeHoist(_full) {}
-        Octree(const childrenType _children) : children(_children) {}
-        ~Octree() {}
-
-        // For testing.
-        bool getVoxel(const VoxelAddress addr) const {
-            auto childIndex = addr.getSubtreeIndex(height);
-            if(full[childIndex]) {
-                return true;
-            } else if (children[childIndex].use_count() == 0) {
-                return false;
-            } else {
-                return children[childIndex]->getVoxel(addr);
-            }
-        }
-
-        boost::shared_ptr<const Octree> setLeaf(boost::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) const {
-            childrenType newChildren(children);
-            newChildren[addr.getSubtreeIndex(height)] = leaf;
-            return boost::make_shared<const Octree>(newChildren);
-        }
-
-        boost::shared_ptr<const Octree> intersectionWith(boost::shared_ptr<const Octree> other) const;
-        boost::shared_ptr<const Octree> unionWith(boost::shared_ptr<const Octree> other) const;
-
-        bool operator==(const Octree &other) const;
-
-    private:
-        static const uint_fast8_t height = 0;
-        const childrenType children;
-    };
-
-#endif
 
 }
 

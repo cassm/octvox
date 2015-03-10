@@ -12,7 +12,7 @@ namespace {
 
     class OctreeTest : public ::testing::Test {
     protected:
-        static const auto height = 0;
+        static const auto height = 2;
         shared_ptr<const Octree<height> > emptyTree;
         shared_ptr<const Octree<height> > fullTree;
         shared_ptr<const Octree<height> > partialTree;
