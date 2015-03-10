@@ -14,22 +14,10 @@ namespace octvox {
 
     class VoxelAddress;
 
-
-    class OctreeHoist {
-    public:
-        static const size_t childrenSize = 8;
-
-        OctreeHoist() = default;
-        OctreeHoist(const OctreeHoist &) = default;
-        OctreeHoist(const std::bitset<childrenSize> _full) : full(_full) {}
-
-    protected:
-        std::bitset<childrenSize> full;
-    };
-
     template<uint_fast8_t height>
-    class Octree : public OctreeHoist {
+    class Octree {
     public:
+        static constexpr size_t childrenSize = 8;
         static_assert(height >= 0, "Attempt to instantiate Octree with negative height");
         using childType = typename std::conditional<(height > 0), Octree<height - 1>, OctLeaf>::type;
         using childrenType = std::array<boost::shared_ptr<const childType>, childrenSize>;
@@ -41,7 +29,7 @@ namespace octvox {
             children[addr.getSubtreeIndex(height)] = boost::make_shared<const Octree<height - 1> >(leaf, addr);
         }
         // For testing.
-        Octree(const std::bitset<childrenSize> _full) : OctreeHoist(_full) {}
+        Octree(const std::bitset<childrenSize> _full) : full(_full) {}
         ~Octree() {}
 
         // For testing.
@@ -67,6 +55,7 @@ namespace octvox {
 
     private:
         childrenType children;
+        std::bitset<childrenSize> full;
 
         template <decltype(height) h>
         inline boost::shared_ptr<const Octree> setLeafImpl(
