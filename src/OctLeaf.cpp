@@ -1,11 +1,11 @@
 #include "OctLeaf.hpp"
 #include "VoxelAddress.hpp"
-#include <boost/make_shared.hpp>
+#include <memory>
 
 namespace octvox {
 
-    using boost::shared_ptr;
-    using boost::make_shared;
+    using std::shared_ptr;
+    using std::make_shared;
 
     OctLeaf::~OctLeaf() {
     }

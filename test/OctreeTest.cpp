@@ -1,12 +1,10 @@
 #include "gtest/gtest.h"
 #include "Octree.hpp"
-#include "VoxelAddress.hpp"
-#include <boost/make_shared.hpp>
 
 namespace {
 
-    using boost::shared_ptr;
-    using boost::make_shared;
+    using std::shared_ptr;
+    using std::make_shared;
     using std::bitset;
     using namespace octvox;
 

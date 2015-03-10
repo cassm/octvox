@@ -2,7 +2,7 @@
 #define OCT_LEAF_HPP
 
 #include <bitset>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace octvox {
 
@@ -28,9 +28,9 @@ namespace octvox {
 
         bool getVoxel(const VoxelAddress) const;
 
-        boost::shared_ptr<const OctLeaf> intersectionWith(boost::shared_ptr<const OctLeaf> other) const;
+        std::shared_ptr<const OctLeaf> intersectionWith(std::shared_ptr<const OctLeaf> other) const;
 
-        boost::shared_ptr<const OctLeaf> unionWith(boost::shared_ptr<const OctLeaf> other) const;
+        std::shared_ptr<const OctLeaf> unionWith(std::shared_ptr<const OctLeaf> other) const;
 
         bool operator==(const OctLeaf &other) const;
 

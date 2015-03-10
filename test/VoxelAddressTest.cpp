@@ -1,12 +1,9 @@
 #include "gtest/gtest.h"
 #include "OctLeaf.hpp"
 #include "VoxelAddress.hpp"
-#include <boost/make_shared.hpp>
 
 namespace {
 
-    using boost::shared_ptr;
-    using boost::make_shared;
     using namespace octvox;
 
     class VoxelAddressTest : public ::testing::Test {
