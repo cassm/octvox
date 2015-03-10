@@ -12,7 +12,7 @@ namespace {
 
     class OctreeTest : public ::testing::Test {
     protected:
-        static const auto height = 2;
+        static const auto height = 0;
         shared_ptr<const Octree<height> > emptyTree;
         shared_ptr<const Octree<height> > fullTree;
         shared_ptr<const Octree<height> > partialTree;
@@ -20,6 +20,7 @@ namespace {
         shared_ptr<const Octree<height> > b;
         shared_ptr<const Octree<height> > aIntersectB;
         shared_ptr<const Octree<height> > aUnionB;
+        shared_ptr<const OctLeaf> partialLeaf;
         const VoxelAddress origin;
         const VoxelAddress full;
         const VoxelAddress empty;
@@ -34,7 +35,7 @@ namespace {
             fullTree = make_shared<const Octree<height> >(bitset<Octree<height>::childrenSize>().set());
             bitset<OctLeaf::volume> voxels;
             voxels.set(full.getLinearIndex());
-            auto partialLeaf = make_shared<const OctLeaf>(voxels);
+            partialLeaf = make_shared<const OctLeaf>(voxels);
             partialTree = emptyTree->setLeaf(partialLeaf, full);
         }
 
@@ -46,6 +47,18 @@ namespace {
     };
 
     TEST_F(OctreeTest, Construction) {}
+
+    TEST_F(OctreeTest, ConstructorH0LeafAddress) {
+        auto h0FromLeaf = Octree<0>(partialLeaf, full);
+        ASSERT_TRUE(h0FromLeaf.getVoxel(full));
+        ASSERT_FALSE(h0FromLeaf.getVoxel(empty));
+    }
+
+    TEST_F(OctreeTest, ConstructorH2LeafAddress) {
+        auto h2FromLeaf = Octree<2>(partialLeaf, full);
+        ASSERT_TRUE(h2FromLeaf.getVoxel(full));
+        ASSERT_FALSE(h2FromLeaf.getVoxel(empty));
+    }
 
     TEST_F(OctreeTest, getVoxelReturnsFalseWhenGettingAnEmptyVoxel) {
         ASSERT_FALSE(emptyTree->getVoxel(origin));
