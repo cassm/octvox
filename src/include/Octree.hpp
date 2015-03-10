@@ -88,8 +88,7 @@ namespace octvox {
             const VoxelAddress addr,
             childrenType&& newChildren) const {
         static const auto height = 0u;
-        auto& child = newChildren[addr.getSubtreeIndex(height)];
-        child = leaf;
+        newChildren[addr.getSubtreeIndex(height)] = leaf;
         return boost::make_shared<const Octree<height> >(newChildren);
     }
 
