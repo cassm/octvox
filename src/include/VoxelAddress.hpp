@@ -26,6 +26,8 @@ namespace octvox {
     };
 
     inline size_t VoxelAddress::getLinearIndex() const {
+        // There is a trivial transformation from multiplies to shifts,
+        // but this expression is slightly clearer and should be just as fast.
         return (x & OctLeaf::lengthMask) * OctLeaf::edgeLength * OctLeaf::edgeLength
                 + (y & OctLeaf::lengthMask) * OctLeaf::edgeLength
                 + (z & OctLeaf::lengthMask);
@@ -33,7 +35,7 @@ namespace octvox {
 
     inline VoxelAddress::subtree_index_t VoxelAddress::getSubtreeIndex(uint_fast8_t height) const {
         // speed optimise this bittwiddling later if profiling indicates that it matters.
-        height += OctLeaf::edgeLength;
+        height += OctLeaf::edgeBits;
         return ((x & (1 << height)) ? (1 << 2) : 0 |
                 ((y & (1 << height)) ? (1 << 1) : 0) |
                 ((z & (1 << height)) ? (1 << 0) : 0));

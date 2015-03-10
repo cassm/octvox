@@ -75,20 +75,20 @@ namespace {
         ASSERT_FALSE(partialTree0->getVoxel(empty));
     }
 
-#if 0
     TEST_F(OctreeTest, getVoxelReturnsCorrectlyAtNonZeroAddress) {
         ASSERT_TRUE(partialTree->getVoxel(full));
         ASSERT_FALSE(partialTree->getVoxel(empty));
     }
 
-    TEST_F(OctreeTest, getVoxelAliasesOutOfRangeAddresses) {
-        VoxelAddress outOfRangeFull(Octree::edgeLength + full.x, Octree::edgeLength + full.y, Octree::edgeLength + full.z);
-        VoxelAddress outOfRangeEmpty(Octree::edgeLength + empty.x, Octree::edgeLength + empty.y, Octree::edgeLength + empty.z);
+    TEST_F(OctreeTest, getVoxelDoesNotAliasOutOfRangeAddresses) {
+        VoxelAddress outOfRangeFull(OctLeaf::edgeLength + full.x, OctLeaf::edgeLength + full.y, OctLeaf::edgeLength + full.z);
+        VoxelAddress outOfRangeEmpty(OctLeaf::edgeLength + empty.x, OctLeaf::edgeLength + empty.y, OctLeaf::edgeLength + empty.z);
 
-        ASSERT_TRUE(partialTree->getVoxel(outOfRangeFull));
+        ASSERT_FALSE(partialTree->getVoxel(outOfRangeFull));
         ASSERT_FALSE(partialTree->getVoxel(outOfRangeEmpty));
     }
 
+#if 0
     TEST_F(OctreeTest, equalReturnsTrueOnIdenticalOctrees) {
         ASSERT_TRUE(*a == *a);
     }
