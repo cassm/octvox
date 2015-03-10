@@ -7,10 +7,13 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 #include <bitset>
+#include <type_traits>
+#include <search.h>
 
 namespace octvox {
 
     class VoxelAddress;
+
 
     class OctreeHoist {
     public:
@@ -27,8 +30,14 @@ namespace octvox {
     template<uint_fast8_t height>
     class Octree : public OctreeHoist {
     public:
+        static_assert(!(height < 0), "Attempt to instantiate Octree with negative height");
+        using childType = typename std::conditional<(height > 0), Octree<height - 1>, OctLeaf>::type;
+        using childrenType = std::array<boost::shared_ptr<const childType>, childrenSize>;
+
         Octree() = default;
         Octree(const Octree &) = default;
+        Octree(childrenType _children) : children(_children) {}
+        //Octree(const boost::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) {}
         // For testing.
         Octree(const std::bitset<childrenSize> _full) : OctreeHoist(_full) {}
         ~Octree() {}
@@ -45,8 +54,8 @@ namespace octvox {
             }
         }
 
-        boost::shared_ptr<const Octree> setLeaf(boost::shared_ptr<const OctLeaf> leaf, const VoxelAddress) const {
-            return boost::make_shared<const Octree>();
+        boost::shared_ptr<const Octree> setLeaf(const boost::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) const {
+            return setLeafImpl<height>(leaf, addr, childrenType(children));
         }
 
         boost::shared_ptr<const Octree> intersectionWith(boost::shared_ptr<const Octree> other) const;
@@ -55,12 +64,37 @@ namespace octvox {
         bool operator==(const Octree &other) const;
 
     private:
-        typedef const std::array<boost::shared_ptr<const Octree>, childrenSize> childrenType;
-
-        Octree(childrenType _children) : children(_children) {}
         childrenType children;
+
+        template <decltype(height) h>
+        inline boost::shared_ptr<const Octree> setLeafImpl(
+                const boost::shared_ptr<const OctLeaf> leaf,
+                const VoxelAddress addr,
+                childrenType&& newChildren) const{
+            auto& child = newChildren[addr.getSubtreeIndex(height)];
+//            if(child) {
+                child = child->setLeaf(leaf, addr);
+//            } else {
+//                child = boost::make_shared<childType>(leaf, addr);
+//            }
+            return boost::make_shared<const Octree>(newChildren);
+        }
+
     };
 
+    template <> template<>
+    inline boost::shared_ptr<const Octree<0u> > Octree<0u>::setLeafImpl<0u>(
+            const boost::shared_ptr<const OctLeaf> leaf,
+            const VoxelAddress addr,
+            childrenType&& newChildren) const {
+        static const auto height = 0u;
+        auto& child = newChildren[addr.getSubtreeIndex(height)];
+        child = leaf;
+        return boost::make_shared<const Octree<height> >(newChildren);
+    }
+
+
+#if 0
     template<>
     class Octree<0> : public OctreeHoist {
     public:
@@ -89,7 +123,6 @@ namespace octvox {
             childrenType newChildren(children);
             newChildren[addr.getSubtreeIndex(height)] = leaf;
             return boost::make_shared<const Octree>(newChildren);
-
         }
 
         boost::shared_ptr<const Octree> intersectionWith(boost::shared_ptr<const Octree> other) const;
@@ -102,7 +135,7 @@ namespace octvox {
         const childrenType children;
     };
 
-
+#endif
 
 }
 
