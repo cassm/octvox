@@ -69,9 +69,6 @@ namespace {
     }
 
     TEST_F(OctreeTest, getVoxelReturnsCorrectlyAtNonZeroAddressOnHeightZeroOctree) {
-        bitset<OctLeaf::volume> voxels;
-        voxels.set(full.getLinearIndex());
-        auto partialLeaf = make_shared<const OctLeaf>(voxels);
         Octree<0> emptyTree0;
         auto partialTree0 = emptyTree0.setLeaf(partialLeaf, full);
         ASSERT_TRUE(partialTree0->getVoxel(full));
