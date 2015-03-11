@@ -32,7 +32,13 @@ namespace octvox {
 
         std::shared_ptr<const OctLeaf> unionWith(std::shared_ptr<const OctLeaf> other) const;
 
-        bool operator==(const OctLeaf &other) const;
+        inline bool operator==(const OctLeaf& other) const noexcept {
+            return voxels == other.voxels;
+        }
+
+        inline bool operator!=(const OctLeaf& other) const noexcept {
+            return !operator==(other);
+        }
 
     private:
         const std::bitset<volume> voxels;

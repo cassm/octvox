@@ -51,12 +51,31 @@ namespace octvox {
             return setLeafImpl<height>(leaf, addr, childrenType(children));
         }
 
+        inline bool operator==(const Octree<height>& other) const noexcept {
+            if(full != other.full) {
+                return false;
+            } else {
+                for(unsigned i = 0u; i < childrenSize; ++i) {
+                    if (!full[i]) {
+                        if (children[i]) {
+                            if (!other.children[i] || (*children[i] != *(other.children[i]))) {
+                                return false;
+                            }
+                        } else if (other.children[i]) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
+        inline bool operator!=(const Octree<height>& other) const noexcept {
+            return !operator==(other);
+        }
+
         std::shared_ptr<const Octree> intersectionWith(std::shared_ptr<const Octree> other) const;
         std::shared_ptr<const Octree> unionWith(std::shared_ptr<const Octree> other) const;
-
-        bool operator==(const Octree &other) const {
-
-        }
 
     private:
         childrenType children;
@@ -74,6 +93,11 @@ namespace octvox {
                 child = std::make_shared<childType>(leaf, addr);
             }
             return std::make_shared<const Octree>(newChildren);
+        }
+
+        // Precondition: children[i] and other.children[i] are both safe to dereference and compare
+        inline bool childrenAtINotEqual(const Octree<height>& other, unsigned i) const noexcept {
+            return false;
         }
 
     };

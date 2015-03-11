@@ -22,8 +22,4 @@ namespace octvox {
         return make_shared<const OctLeaf>(voxels | other->voxels);
     }
 
-    bool OctLeaf::operator==(const OctLeaf &other) const {
-        return voxels == other.voxels;
-    }
-
 }

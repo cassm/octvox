@@ -115,7 +115,6 @@ namespace {
         ASSERT_FALSE(partialTree->getVoxel(outOfRangeEmpty));
     }
 
-#if 0
     TEST_F(OctreeTest, equalReturnsTrueOnIdenticalOctrees) {
         ASSERT_TRUE(*a == *a);
     }
@@ -128,6 +127,7 @@ namespace {
         ASSERT_TRUE(*a == *a2);
     }
 
+#if 0
     TEST_F(OctreeTest, intersectionWorks) {
         shared_ptr<const Octree> i = a->intersectionWith(b);
         ASSERT_TRUE(*i == *aIntersectB);
