@@ -26,12 +26,14 @@ namespace octvox {
         Octree() = default;
         Octree(const Octree &) = default;
         Octree(childrenType _children) : children(_children) {}
+        // Sets the OctLeaf that contains addr to leaf.
         Octree(const std::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) {
             children[addr.getSubtreeIndex(height)] = std::make_shared<const Octree<height - 1> >(leaf, addr);
         }
         // For testing.
         Octree(const std::bitset<childrenSize> _full) : full(_full) {}
-        ~Octree() {}
+
+        ~Octree() = default;
 
         // For testing.
         bool getVoxel(const VoxelAddress addr) const {
@@ -52,7 +54,9 @@ namespace octvox {
         std::shared_ptr<const Octree> intersectionWith(std::shared_ptr<const Octree> other) const;
         std::shared_ptr<const Octree> unionWith(std::shared_ptr<const Octree> other) const;
 
-        bool operator==(const Octree &other) const;
+        bool operator==(const Octree &other) const {
+
+        }
 
     private:
         childrenType children;
