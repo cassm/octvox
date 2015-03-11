@@ -1,7 +1,8 @@
 #ifndef VOXEL_ADDRESS_HPP
 #define VOXEL_ADDRESS_HPP
 
-#include <elf.h>
+#include <cstddef>
+#include <cstdint>
 
 namespace octvox {
 
@@ -41,9 +42,9 @@ namespace octvox {
 
     constexpr inline VoxelAddress::subtree_index_t VoxelAddress::getSubtreeIndex(uint_fast8_t height) noexcept {
         // speed optimise this bittwiddling later if profiling indicates that it matters.
-        return ((x & (1 << (height + leafBits))) ? (1 << 2) : 0) |
+        return static_cast<VoxelAddress::subtree_index_t>(((x & (1 << (height + leafBits))) ? (1 << 2) : 0) |
                 ((y & (1 << (height + leafBits))) ? (1 << 1) : 0) |
-                ((z & (1 << (height + leafBits))) ? (1 << 0) : 0);
+                ((z & (1 << (height + leafBits))) ? (1 << 0) : 0));
     }
 
 }

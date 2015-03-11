@@ -4,7 +4,6 @@ project(octvox)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
-    src/OctLeaf.cpp
     README.md)
 
 set(TEST_SOURCE_FILES

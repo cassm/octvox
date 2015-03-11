@@ -8,9 +8,7 @@
 
 namespace octvox {
 
-    class VoxelAddress;
-
-    // An OctLeaf stores a cubic array of voxels: NxNxN, where N = 2^edgeBits.
+    // An OctLeaf stores a cubic array of voxels: NxNxN, where N = 2^VoxelAddress::leafBits.
     class OctLeaf {
     public:
         // The number of voxels stored in an OctLeaf
@@ -22,11 +20,11 @@ namespace octvox {
 
         OctLeaf(const OctLeaf &) = default;
 
-        bool getVoxel(const VoxelAddress) const;
+        inline bool getVoxel(const VoxelAddress) const noexcept;
 
-        std::shared_ptr<const OctLeaf> intersectionWith(std::shared_ptr<const OctLeaf> other) const;
+        inline std::shared_ptr<const OctLeaf> intersectionWith(std::shared_ptr<const OctLeaf> other) const noexcept;
 
-        std::shared_ptr<const OctLeaf> unionWith(std::shared_ptr<const OctLeaf> other) const;
+        inline std::shared_ptr<const OctLeaf> unionWith(std::shared_ptr<const OctLeaf> other) const noexcept;
 
         inline bool operator==(const OctLeaf& other) const noexcept {
             return voxels == other.voxels;
@@ -39,8 +37,20 @@ namespace octvox {
     private:
         // There may be more optimal representations, but this one will do for now -
         // it should be fairly easy to swap out
+        // Especially attractive would be a constexpr compatible datastructure.
         const std::bitset<volume> voxels;
     };
 
+    inline std::shared_ptr<const OctLeaf> OctLeaf::intersectionWith(std::shared_ptr<const OctLeaf> other) const noexcept {
+        return std::make_shared<const OctLeaf>(voxels & other->voxels);
+    }
+
+    inline std::shared_ptr<const OctLeaf> OctLeaf::unionWith(std::shared_ptr<const OctLeaf> other) const noexcept {
+        return std::make_shared<const OctLeaf>(voxels | other->voxels);
+    }
+
+    inline bool OctLeaf::getVoxel(const VoxelAddress a) const noexcept {
+        return voxels[a.getLinearIndex()];
+    }
 }
 #endif
