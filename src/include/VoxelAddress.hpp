@@ -15,30 +15,27 @@ namespace octvox {
 
         typedef uint_fast8_t subtree_index_t;
 
-        VoxelAddress(addr_t _x, addr_t _y, addr_t _z) :
-                x(_x), y(_y), z(_z) {
-        }
+        constexpr VoxelAddress(addr_t _x, addr_t _y, addr_t _z) noexcept :
+                x(_x), y(_y), z(_z) {}
 
-        inline size_t getLinearIndex() const;
-        inline subtree_index_t getSubtreeIndex(uint_fast8_t height) const;
+        constexpr inline size_t getLinearIndex() noexcept;
+        constexpr inline subtree_index_t getSubtreeIndex(uint_fast8_t height) noexcept;
 
-    private:
     };
 
-    inline size_t VoxelAddress::getLinearIndex() const {
+    constexpr inline size_t VoxelAddress::getLinearIndex() noexcept {
         // There is a trivial transformation from multiplies to shifts,
-        // but this expression is slightly clearer and should be just as fast.
+        // but this expression is slightly clearer and should be just as fast.s
         return (x & OctLeaf::lengthMask) * OctLeaf::edgeLength * OctLeaf::edgeLength
                 + (y & OctLeaf::lengthMask) * OctLeaf::edgeLength
                 + (z & OctLeaf::lengthMask);
     }
 
-    inline VoxelAddress::subtree_index_t VoxelAddress::getSubtreeIndex(uint_fast8_t height) const {
+    constexpr inline VoxelAddress::subtree_index_t VoxelAddress::getSubtreeIndex(uint_fast8_t height) noexcept {
         // speed optimise this bittwiddling later if profiling indicates that it matters.
-        height += OctLeaf::edgeBits;
-        return ((x & (1 << height)) ? (1 << 2) : 0 |
-                ((y & (1 << height)) ? (1 << 1) : 0) |
-                ((z & (1 << height)) ? (1 << 0) : 0));
+        return ((x & (1 << (height + OctLeaf::edgeBits))) ? (1 << 2) : 0) |
+                ((y & (1 << (height + OctLeaf::edgeBits))) ? (1 << 1) : 0) |
+                ((z & (1 << (height + OctLeaf::edgeBits))) ? (1 << 0) : 0);
     }
 
 }
