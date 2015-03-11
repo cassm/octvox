@@ -1,6 +1,8 @@
 #ifndef OCT_LEAF_HPP
 #define OCT_LEAF_HPP
 
+#include "VoxelAddress.hpp"
+
 #include <bitset>
 #include <memory>
 
@@ -11,18 +13,12 @@ namespace octvox {
     // An OctLeaf stores a cubic array of voxels: NxNxN, where N = 2^edgeBits.
     class OctLeaf {
     public:
-        // The number of bits required for one axis of the voxel address
-        static constexpr uint_fast8_t edgeBits = 2;
-        // The number of voxels along one edge of the cube
-        static constexpr uint_fast16_t edgeLength = 1 << edgeBits;
-        // A mask for the bits of a complete address that specify the voxel location within an OctLeaf
-        static constexpr uint_fast64_t lengthMask = edgeLength - 1;
         // The number of voxels stored in an OctLeaf
-        static constexpr size_t volume = edgeLength * edgeLength * edgeLength;
+        static constexpr size_t volume = VoxelAddress::leafLength * VoxelAddress::leafLength * VoxelAddress::leafLength;
 
-        OctLeaf(const std::bitset<volume> &_voxels) : voxels(_voxels) {}
+        constexpr OctLeaf(const std::bitset<volume> &_voxels) noexcept : voxels(_voxels) {}
 
-        ~OctLeaf();
+        ~OctLeaf() = default;
 
         OctLeaf(const OctLeaf &) = default;
 
@@ -41,6 +37,8 @@ namespace octvox {
         }
 
     private:
+        // There may be more optimal representations, but this one will do for now -
+        // it should be fairly easy to swap out
         const std::bitset<volume> voxels;
     };
 

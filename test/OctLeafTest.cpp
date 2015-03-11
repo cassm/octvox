@@ -90,8 +90,8 @@ namespace {
     }
 
     TEST_F(OctLeafTest, getVoxelAliasesOutOfRangeAddresses) {
-        VoxelAddress outOfRangeFull(OctLeaf::edgeLength + full.x, OctLeaf::edgeLength + full.y, OctLeaf::edgeLength + full.z);
-        VoxelAddress outOfRangeEmpty(OctLeaf::edgeLength + empty.x, OctLeaf::edgeLength + empty.y, OctLeaf::edgeLength + empty.z);
+        VoxelAddress outOfRangeFull(OctLeaf::leafLength + full.x, OctLeaf::leafLength + full.y, OctLeaf::leafLength + full.z);
+        VoxelAddress outOfRangeEmpty(OctLeaf::leafLength + empty.x, OctLeaf::leafLength + empty.y, OctLeaf::leafLength + empty.z);
 
         ASSERT_TRUE(partialLeaf->getVoxel(outOfRangeFull));
         ASSERT_FALSE(partialLeaf->getVoxel(outOfRangeEmpty));
