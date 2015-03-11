@@ -14,6 +14,7 @@ namespace {
         shared_ptr<const Octree<height> > emptyTree;
         shared_ptr<const Octree<height> > fullTree;
         shared_ptr<const Octree<height> > partialTree;
+        shared_ptr<const Octree<height> > a;
         shared_ptr<const Octree<height> > a2;
         shared_ptr<const Octree<height> > b;
         shared_ptr<const Octree<height> > aIntersectB;
@@ -22,19 +23,47 @@ namespace {
         const VoxelAddress origin;
         const VoxelAddress full;
         const VoxelAddress empty;
+        const VoxelAddress onlyInA;
+        const VoxelAddress onlyInB;
+        const VoxelAddress inBoth;
 
         OctreeTest() :
                 origin(0, 0, 0),
                 full(1, 2, 3),
-                empty(3, 2, 1)
+                empty(3, 2, 1),
+                onlyInA(6, 7, 8),
+                onlyInB(7, 8, 9),
+                inBoth(8, 9, 10)
 
         {
             emptyTree = make_shared<const Octree<height> >();
+
             fullTree = make_shared<const Octree<height> >(bitset<Octree<height>::childrenSize>().set());
+
             bitset<OctLeaf::volume> voxels;
             voxels.set(full.getLinearIndex());
             partialLeaf = make_shared<const OctLeaf>(voxels);
             partialTree = emptyTree->setLeaf(partialLeaf, full);
+
+            voxels.reset();
+            voxels.set(onlyInA.getLinearIndex());
+            voxels.set(inBoth.getLinearIndex());
+            a = make_shared<const Octree<height> >(make_shared<const OctLeaf>(voxels), inBoth);
+            a2 = make_shared<const Octree<height> >(make_shared<const OctLeaf>(voxels), inBoth);
+
+            voxels.reset();
+            voxels.set(onlyInA.getLinearIndex());
+            voxels.set(inBoth.getLinearIndex());
+            voxels.set(onlyInB.getLinearIndex());
+            aUnionB = make_shared<const Octree<height> >(make_shared<const OctLeaf> (voxels), inBoth);
+
+            voxels.reset();
+            voxels.set(inBoth.getLinearIndex());
+            aIntersectB = make_shared<const Octree<height> >(make_shared<const OctLeaf> (voxels), inBoth);
+
+            voxels.reset();
+            voxels.set(onlyInB.getLinearIndex());
+            b = make_shared<const Octree<height> >(make_shared<const OctLeaf> (voxels), inBoth);
         }
 
         virtual ~OctreeTest() {}
