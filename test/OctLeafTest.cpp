@@ -49,15 +49,20 @@ namespace {
             a = make_shared<const OctLeaf> (voxels);
             a2 = make_shared<const OctLeaf> (voxels);
 
+            voxels.reset();
             voxels.set(onlyInB.getLinearIndex());
-            aIntersectB = make_shared<const OctLeaf> (voxels);
+            voxels.set(inBoth.getLinearIndex());
+            b = make_shared<const OctLeaf> (voxels);
+
+            voxels.reset();
+            voxels.set(onlyInA.getLinearIndex());
+            voxels.set(inBoth.getLinearIndex());
+            voxels.set(onlyInB.getLinearIndex());
+            aUnionB = make_shared<const OctLeaf> (voxels);
 
             voxels.reset();
             voxels.set(inBoth.getLinearIndex());
-            aUnionB = make_shared<const OctLeaf> (voxels);
-
-            voxels.set(onlyInB.getLinearIndex());
-            b = make_shared<const OctLeaf> (voxels);
+            aIntersectB = make_shared<const OctLeaf> (voxels);
         }
 
         virtual ~OctLeafTest() {
@@ -106,6 +111,9 @@ namespace {
 
     TEST_F(OctLeafTest, intersectionWorks) {
         shared_ptr<const OctLeaf> i = a->intersectionWith(b);
+        ASSERT_TRUE(i->getVoxel(inBoth));
+        ASSERT_FALSE(i->getVoxel(onlyInA));
+        ASSERT_FALSE(i->getVoxel(onlyInB));
         ASSERT_TRUE(*i == *aIntersectB);
     }
 

@@ -15,11 +15,11 @@ namespace octvox {
     }
 
     shared_ptr<const OctLeaf> OctLeaf::intersectionWith(shared_ptr<const OctLeaf> other) const {
-        return make_shared<const OctLeaf>(voxels | other->voxels);
+        return make_shared<const OctLeaf>(voxels & other->voxels);
     }
 
     shared_ptr<const OctLeaf> OctLeaf::unionWith(shared_ptr<const OctLeaf> other) const {
-        return make_shared<const OctLeaf>(voxels & other->voxels);
+        return make_shared<const OctLeaf>(voxels | other->voxels);
     }
 
     bool OctLeaf::operator==(const OctLeaf &other) const {

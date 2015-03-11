@@ -12,7 +12,7 @@ namespace octvox {
     class OctLeaf {
     public:
         // The number of bits required for one axis of the voxel address
-        static constexpr uint_fast8_t edgeBits = 4;
+        static constexpr uint_fast8_t edgeBits = 2;
         // The number of voxels along one edge of the cube
         static constexpr uint_fast16_t edgeLength = 1 << edgeBits;
         // A mask for the bits of a complete address that specify the voxel location within an OctLeaf
