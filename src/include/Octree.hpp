@@ -24,14 +24,11 @@ namespace octvox {
         using childrenType = std::array<std::shared_ptr<const childType>, childrenSize>;
 
         Octree() noexcept = default;
-        Octree(const Octree &) noexcept = default;
         Octree(childrenType _children) noexcept : children(_children) {}
         // Sets the OctLeaf that contains addr to leaf.
         Octree(const std::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) noexcept;
         // For testing.
         Octree(const std::bitset<childrenSize> _full) : full(_full) {}
-
-        ~Octree() = default;
 
         inline std::shared_ptr<const Octree> setLeaf(
                 const std::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) const noexcept;
@@ -87,6 +84,12 @@ namespace octvox {
             }
             return true;
         }
+    }
+
+    template<uint_fast8_t height>
+    inline std::shared_ptr<const Octree<height> >Octree<height>::intersectionWith(
+            std::shared_ptr<const octvox::Octree<height> > other) const {
+        return std::make_shared<const Octree<height> >();
     }
 
     template<uint_fast8_t height>
