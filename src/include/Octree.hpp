@@ -13,7 +13,9 @@ namespace octvox {
 
     class VoxelAddress;
 
-    template<uint_fast8_t height>
+    using heightType = int_fast8_t;
+
+    template<heightType height>
     class Octree {
     public:
         static constexpr size_t childrenSize = 8;
@@ -45,7 +47,7 @@ namespace octvox {
         childrenType children;
         std::bitset<childrenSize> full;
 
-        template <decltype(height) h>
+        template <heightType h>
         inline std::shared_ptr<const Octree> setLeafImpl(
                 const std::shared_ptr<const OctLeaf> leaf,
                 const VoxelAddress addr,
@@ -55,18 +57,18 @@ namespace octvox {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Public Methods
 
-    template <uint_fast8_t height>
+    template <heightType height>
     Octree<height>::Octree(const std::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) noexcept {
         children[addr.getSubtreeIndex(height)] = std::make_shared<const Octree<height - 1> >(leaf, addr);
     }
 
-    template <uint_fast8_t height>
+    template <heightType height>
     inline std::shared_ptr<const Octree<height> > Octree<height>::setLeaf(
             const std::shared_ptr<const OctLeaf> leaf, const VoxelAddress addr) const noexcept {
         return setLeafImpl<height>(leaf, addr, childrenType(children));
     }
 
-    template <uint_fast8_t height>
+    template <heightType height>
     inline bool Octree<height>::operator==(const Octree<height>& other) const noexcept {
         if(full != other.full) {
             return false;
@@ -86,13 +88,13 @@ namespace octvox {
         }
     }
 
-    template<uint_fast8_t height>
+    template<heightType height>
     inline std::shared_ptr<const Octree<height> >Octree<height>::intersectionWith(
             std::shared_ptr<const octvox::Octree<height> > other) const {
         return std::make_shared<const Octree<height> >();
     }
 
-    template<uint_fast8_t height>
+    template<heightType height>
     bool Octree<height>::getVoxel(const VoxelAddress addr) const {
         auto childIndex = addr.getSubtreeIndex(height);
         if(full[childIndex]) {
@@ -106,8 +108,10 @@ namespace octvox {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Private Methods
-    template <uint_fast8_t height>
-    template <decltype(height) h>
+
+    // setLeafImpl is a template method so that it can be specialised independently of Octree.
+    template <heightType height>
+    template <heightType h>
     inline std::shared_ptr<const Octree<height> > Octree<height>::setLeafImpl(
             const std::shared_ptr<const OctLeaf> leaf,
             const VoxelAddress addr,
