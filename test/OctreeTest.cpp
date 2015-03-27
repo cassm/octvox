@@ -38,12 +38,16 @@ namespace {
         {
             emptyTree = make_shared<const Octree<height> >();
 
-            fullTree = make_shared<const Octree<height> >(bitset<Octree<height>::childrenSize>().set());
+            Octree<height>::Children allFull;
+            for(subtreeIndexType i = 0; i < Octree<height>::childrenSize; ++i) {
+                allFull.fill(i);
+            }
+            fullTree = make_shared<const Octree<height> >(allFull);
 
             bitset<OctLeaf::volume> voxels;
             voxels.set(full.getLinearIndex());
             partialLeaf = make_shared<const OctLeaf>(voxels);
-            partialTree = emptyTree->setLeaf(partialLeaf, full);
+            partialTree = make_shared<const Octree<height> >(partialLeaf, full);
 
             voxels.reset();
             voxels.set(onlyInA.getLinearIndex());
@@ -96,10 +100,9 @@ namespace {
     }
 
     TEST_F(OctreeTest, getVoxelReturnsCorrectlyAtNonZeroAddressOnHeightZeroOctree) {
-        Octree<0> emptyTree0;
-        auto partialTree0 = emptyTree0.setLeaf(partialLeaf, full);
-        ASSERT_TRUE(partialTree0->getVoxel(full));
-        ASSERT_FALSE(partialTree0->getVoxel(empty));
+        Octree<0> partialTree0(partialLeaf, full);
+        ASSERT_TRUE(partialTree0.getVoxel(full));
+        ASSERT_FALSE(partialTree0.getVoxel(empty));
     }
 
     TEST_F(OctreeTest, getVoxelReturnsCorrectlyAtNonZeroAddress) {
@@ -129,7 +132,7 @@ namespace {
 
 #if 0
     TEST_F(OctreeTest, intersectionWorks) {
-        shared_ptr<const Octree> i = a->intersectionWith(b);
+        shared_ptr<const Octree<height> > i = a->intersectionWith(b);
         ASSERT_TRUE(*i == *aIntersectB);
     }
 

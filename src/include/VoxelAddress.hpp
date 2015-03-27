@@ -6,6 +6,8 @@
 
 namespace octvox {
 
+    using subtreeIndexType = uint_fast8_t;
+
     class Octleaf;
 
     class VoxelAddress {
@@ -22,13 +24,11 @@ namespace octvox {
         const addr_t y;
         const addr_t z;
 
-        typedef uint_fast8_t subtree_index_t;
-
         constexpr VoxelAddress(addr_t _x, addr_t _y, addr_t _z) noexcept :
                 x(_x), y(_y), z(_z) {}
 
         constexpr inline size_t getLinearIndex() noexcept;
-        constexpr inline subtree_index_t getSubtreeIndex(uint_fast8_t height) noexcept;
+        constexpr inline subtreeIndexType getSubtreeIndex(uint_fast8_t height) noexcept;
 
     };
 
@@ -40,9 +40,9 @@ namespace octvox {
                 + (z & leafBitsMask);
     }
 
-    constexpr inline VoxelAddress::subtree_index_t VoxelAddress::getSubtreeIndex(uint_fast8_t height) noexcept {
+    constexpr inline subtreeIndexType VoxelAddress::getSubtreeIndex(uint_fast8_t height) noexcept {
         // speed optimise this bittwiddling later if profiling indicates that it matters.
-        return static_cast<VoxelAddress::subtree_index_t>(((x & (1 << (height + leafBits))) ? (1 << 2) : 0) |
+        return static_cast<subtreeIndexType>(((x & (1 << (height + leafBits))) ? (1 << 2) : 0) |
                 ((y & (1 << (height + leafBits))) ? (1 << 1) : 0) |
                 ((z & (1 << (height + leafBits))) ? (1 << 0) : 0));
     }
