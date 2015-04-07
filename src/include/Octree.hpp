@@ -37,7 +37,6 @@ namespace octvox {
             inline bool get(const VoxelAddress addr) const noexcept;
             inline bool operator==(const Octree<height>::Children& other) const noexcept;
             inline bool operator!=(const Octree<height>::Children& other) const noexcept;
-        private:
             std::array<Fullness, childrenSize> fullness;
             std::array<std::shared_ptr<const childType>, childrenSize> children;
         };
@@ -89,7 +88,12 @@ namespace octvox {
             std::shared_ptr<const octvox::Octree<height> > other) const {
         Children newChildren;
         for(int i = 0; i < childrenSize; ++i) {
-            //newChildren[i] = children[i]->intersectionWith(other->children[i]);
+            if(children.fullness[i] == Fullness::empty) {
+                // do nothing: newChildnren is empty already
+            } else if(children.fullness[i] == Fullness::full) {
+
+            }
+            newChildren.set(i, children.children[i]->intersectWith(other->children.children[i]));
         }
         return std::make_shared<const Octree<height> >(newChildren);
     }
