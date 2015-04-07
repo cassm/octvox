@@ -28,6 +28,8 @@ namespace octvox {
                 x(_x), y(_y), z(_z) {}
 
         constexpr inline size_t getLinearIndex() noexcept;
+
+        //TODO turn this into a template function on height
         constexpr inline subtreeIndexType getSubtreeIndex(uint_fast8_t height) noexcept;
 
     };

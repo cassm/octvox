@@ -20,6 +20,8 @@ namespace octvox {
 
         OctLeaf(const OctLeaf &) = default;
 
+        // TODO add other explicit defaults for moves etc.
+
         inline bool getVoxel(const VoxelAddress) const noexcept;
 
         inline std::shared_ptr<const OctLeaf> intersectWith(std::shared_ptr<const OctLeaf> other) const noexcept;
