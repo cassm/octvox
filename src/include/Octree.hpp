@@ -26,7 +26,7 @@ namespace octvox {
             typename std::conditional<(height > 0), Octree< (height > 0) ? (height - 1) : 0 >, OctLeaf>::type;
 
         enum class Fullness {empty, partial, full};
-        
+
         class Children {
         public:
             Children() noexcept {fullness.fill(Fullness::empty);}
@@ -83,12 +83,12 @@ namespace octvox {
     }
 
     template<heightType height>
-    inline std::shared_ptr<const Octree<height> >Octree<height>::intersectWith(
+    inline std::shared_ptr<const Octree<height> > Octree<height>::intersectWith(
             std::shared_ptr<const octvox::Octree<height> > other) const {
         Children newChildren;
         for(int i = 0; i < childrenSize; ++i) {
             if(children.fullness[i] == Fullness::empty) {
-                // do nothing: newChildnren is empty already
+                // do nothing: newChildren is empty already
             } else if(children.fullness[i] == Fullness::full) {
 
             }
