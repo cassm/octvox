@@ -26,8 +26,7 @@ namespace octvox {
             typename std::conditional<(height > 0), Octree< (height > 0) ? (height - 1) : 0 >, OctLeaf>::type;
 
         enum class Fullness {empty, partial, full};
-
-        //using childrenType = std::array<childHolder, childrenSize>;
+        
         class Children {
         public:
             Children() noexcept {fullness.fill(Fullness::empty);}
