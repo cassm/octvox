@@ -38,9 +38,9 @@ namespace {
         {
             emptyTree = make_shared<const Octree<height> >();
 
-            Octree<height>::Children allFull;
+            std::array<Octree<height>::Child, Octree<height>::childrenSize> allFull;
             for(subtreeIndexType i = 0; i < Octree<height>::childrenSize; ++i) {
-                allFull.fill(i);
+                allFull[i].fill();
             }
             fullTree = make_shared<const Octree<height> >(allFull);
 
