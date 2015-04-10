@@ -50,7 +50,7 @@ namespace octvox {
         inline bool operator==(const Octree<height>& other) const noexcept;
         inline bool operator!=(const Octree<height>& other) const noexcept;
 
-        inline std::shared_ptr<const Octree> intersectionWith(std::shared_ptr<const Octree> other) const;
+        inline std::shared_ptr<const Octree> intersectWith(std::shared_ptr<const Octree> other) const;
         inline std::shared_ptr<const Octree> unionWith(std::shared_ptr<const Octree> other) const;
 
         // For testing.
@@ -84,7 +84,7 @@ namespace octvox {
     }
 
     template<heightType height>
-    inline std::shared_ptr<const Octree<height> >Octree<height>::intersectionWith(
+    inline std::shared_ptr<const Octree<height> >Octree<height>::intersectWith(
             std::shared_ptr<const octvox::Octree<height> > other) const {
         std::array<Child, childrenSize> newChildren;
         for(int i = 0; i < childrenSize; ++i) {
@@ -103,7 +103,7 @@ namespace octvox {
 
             else {
                 newChildren[i].fullness = Fullness::partial;
-                newChildren[i].child = children[i].child->intersectionWith(other->children[i].child);
+                newChildren[i].child = children[i].child->intersectWith(other->children[i].child);
             }
         }
         return std::make_shared<const Octree<height> >(newChildren);

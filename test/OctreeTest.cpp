@@ -132,22 +132,22 @@ namespace {
 
     TEST_F(OctreeTest, thatIntersectionOfTwoEmptyOctreesIsEmpty) {
         shared_ptr<const Octree<height> > alsoEmpty = make_shared<const Octree<height> >();
-        shared_ptr<const Octree<height> > i = emptyTree->intersectionWith(alsoEmpty);
+        shared_ptr<const Octree<height> > i = emptyTree->intersectWith(alsoEmpty);
         ASSERT_TRUE(*i == Octree<height>());
     }
 
     TEST_F(OctreeTest, thatIntersectionOfAPartialWithAnEmptyIsEmpty) {
-        shared_ptr<const Octree<height> > i = a->intersectionWith(emptyTree);
+        shared_ptr<const Octree<height> > i = a->intersectWith(emptyTree);
         ASSERT_TRUE(*i == Octree<height>());
     }
 
     TEST_F(OctreeTest, thatIntersectionOfAnEmptyWithAPartialIsEmpty) {
-        shared_ptr<const Octree<height> > i = emptyTree->intersectionWith(a);
+        shared_ptr<const Octree<height> > i = emptyTree->intersectWith(a);
         ASSERT_TRUE(*i == Octree<height>());
     }
 
     TEST_F(OctreeTest, thatIntersectionOfAPartialWithItselfIsEqualToThatPartial) {
-        shared_ptr<const Octree<height> > i = a2->intersectionWith(a);
+        shared_ptr<const Octree<height> > i = a2->intersectWith(a);
         ASSERT_TRUE(*i == *a);
     }
 
@@ -159,17 +159,17 @@ namespace {
         }
         fullTreeToo = make_shared<const Octree<height> >(allFull);
 
-        shared_ptr<const Octree<height> > i = fullTree->intersectionWith(fullTreeToo);
+        shared_ptr<const Octree<height> > i = fullTree->intersectWith(fullTreeToo);
         ASSERT_TRUE(*i == *fullTree);
     }
 
     TEST_F(OctreeTest, thatIntersectionOfAPartialWithAFullIsEqualToThatPartial) {
-        shared_ptr<const Octree<height> > i = a->intersectionWith(fullTree);
+        shared_ptr<const Octree<height> > i = a->intersectWith(fullTree);
         ASSERT_TRUE(*i == *a);
     }
 
     TEST_F(OctreeTest, thatIntersectionOfAFullWithAPartialIsEqualToThatPartial) {
-        shared_ptr<const Octree<height> > i = fullTree->intersectionWith(a);
+        shared_ptr<const Octree<height> > i = fullTree->intersectWith(a);
         ASSERT_TRUE(*i == *a);
     }
 
