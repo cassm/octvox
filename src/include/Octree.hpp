@@ -95,6 +95,12 @@ namespace octvox {
             else if (children[i].fullness == Fullness::full && other->children[i].fullness == Fullness::full) {
                 newChildren[i].fullness = Fullness::full;
             }
+
+            else if (children[i].fullness == Fullness::full || other->children[i].fullness == Fullness::full) {
+                newChildren[i].fullness = Fullness::partial;
+                newChildren[i].child = children[i].fullness == Fullness::full ? other->children[i].child : children[i].child;
+            }
+
             else {
                 newChildren[i].fullness = Fullness::partial;
                 newChildren[i].child = children[i].child->intersectionWith(other->children[i].child);
