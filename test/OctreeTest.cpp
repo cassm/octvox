@@ -132,22 +132,22 @@ namespace {
 
     TEST_F(OctreeTest, thatIntersectionOfTwoEmptyOctreesIsEmpty) {
         shared_ptr<const Octree<height> > alsoEmpty = make_shared<const Octree<height> >();
-        shared_ptr<const Octree<height> > i = emptyTree->intersectWith(alsoEmpty);
+        shared_ptr<const Octree<height> > i = emptyTree->intersectionWith(alsoEmpty);
         ASSERT_TRUE(*i == Octree<height>());
     }
 
     TEST_F(OctreeTest, thatIntersectionOfAPartialWithAnEmptyIsEmpty) {
-        shared_ptr<const Octree<height> > i = a->intersectWith(emptyTree);
+        shared_ptr<const Octree<height> > i = a->intersectionWith(emptyTree);
         ASSERT_TRUE(*i == Octree<height>());
     }
 
     TEST_F(OctreeTest, thatIntersectionOfAnEmptyWithAPartialIsEmpty) {
-        shared_ptr<const Octree<height> > i = emptyTree->intersectWith(a);
+        shared_ptr<const Octree<height> > i = emptyTree->intersectionWith(a);
         ASSERT_TRUE(*i == Octree<height>());
     }
 
     TEST_F(OctreeTest, thatIntersectionOfAPartialWithItselfIsEqualToThatPartial) {
-        shared_ptr<const Octree<height> > i = a2->intersectWith(a);
+        shared_ptr<const Octree<height> > i = a2->intersectionWith(a);
         ASSERT_TRUE(*i == *a);
     }
 

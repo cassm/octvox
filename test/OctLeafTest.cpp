@@ -110,7 +110,7 @@ namespace {
     }
 
     TEST_F(OctLeafTest, intersectionWorks) {
-        shared_ptr<const OctLeaf> i = a->intersectWith(b);
+        shared_ptr<const OctLeaf> i = a->intersectionWith(b);
         ASSERT_TRUE(i->getVoxel(inBoth));
         ASSERT_FALSE(i->getVoxel(onlyInA));
         ASSERT_FALSE(i->getVoxel(onlyInB));

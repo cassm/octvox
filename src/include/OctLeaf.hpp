@@ -24,7 +24,7 @@ namespace octvox {
 
         inline bool getVoxel(const VoxelAddress) const noexcept;
 
-        inline std::shared_ptr<const OctLeaf> intersectWith(std::shared_ptr<const OctLeaf> other) const noexcept;
+        inline std::shared_ptr<const OctLeaf> intersectionWith(std::shared_ptr<const OctLeaf> other) const noexcept;
 
         inline std::shared_ptr<const OctLeaf> unionWith(std::shared_ptr<const OctLeaf> other) const noexcept;
 
@@ -43,7 +43,7 @@ namespace octvox {
         const std::bitset<volume> voxels;
     };
 
-    inline std::shared_ptr<const OctLeaf> OctLeaf::intersectWith(std::shared_ptr<const OctLeaf> other) const noexcept {
+    inline std::shared_ptr<const OctLeaf> OctLeaf::intersectionWith(std::shared_ptr<const OctLeaf> other) const noexcept {
         return std::make_shared<const OctLeaf>(voxels & other->voxels);
     }
 
