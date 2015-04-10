@@ -151,6 +151,28 @@ namespace {
         ASSERT_TRUE(*i == *a);
     }
 
+    TEST_F(OctreeTest, thatIntersectionOfAFullWithAFullIsFull) {
+        shared_ptr<const Octree<height> > fullTreeToo;
+        std::array<Octree<height>::Child, Octree<height>::childrenSize> allFull;
+        for(subtreeIndexType i = 0; i < Octree<height>::childrenSize; ++i) {
+            allFull[i].fill();
+        }
+        fullTreeToo = make_shared<const Octree<height> >(allFull);
+
+        shared_ptr<const Octree<height> > i = fullTree->intersectionWith(fullTreeToo);
+        ASSERT_TRUE(*i == *fullTree);
+    }
+
+    TEST_F(OctreeTest, thatIntersectionOfAPartialWithAFullIsEqualToThatPartial) {
+        shared_ptr<const Octree<height> > i = a->intersectionWith(fullTree);
+        ASSERT_TRUE(*i == *a);
+    }
+
+    TEST_F(OctreeTest, thatIntersectionOfAFullWithAPartialIsEqualToThatPartial) {
+        shared_ptr<const Octree<height> > i = fullTree->intersectionWith(a);
+        ASSERT_TRUE(*i == *a);
+    }
+
 #if 0
     TEST_F(OctreeTest, unionWorks) {
         shared_ptr<const Octree> i = a->unionWith(b);
